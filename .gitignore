@@ -1,0 +1,51 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribuição / pacotes
+.Python
+env/
+venv/
+myenv/
+build/
+dist/
+.eggs/
+*.egg-info/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.sublime*
+*.swp
+
+# Logs e relatórios
+*.log
+coverage/
+htmlcov/
+
+# Banco de dados e arquivos de mídia
+*.sqlite3
+media/
+staticfiles/
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.bak
+~$*
+
+# Configurações locais
+.env
+.env.*
+
+# Readme e instruções (não versionar cópias locais)
+README.md
+INSTRUCOES_RAPIDAS.md
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db 
