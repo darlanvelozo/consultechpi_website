@@ -1,0 +1,145 @@
+{% extends 'web_site/base.html' %}
+
+{% block title %}Serviços - {% if config %}{{ config.nome_empresa }}{% else %}ConsulTech Piauí{% endif %}{% endblock %}
+
+{% block meta_description %}{% if config %}Conheça todos os serviços de {{ config.nome_empresa }}.{% else %}Conheça os serviços oferecidos pela ConsulTech Piauí.{% endif %}{% endblock %}
+
+{% block extra_css %}
+/* Página Serviços */
+.services-page-header {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    background: var(--gradient-primary);
+    color: #fff;
+}
+
+.services-page-header h1 {
+    font-size: 2.75rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.services-page-header p {
+    font-size: 1.125rem;
+    opacity: 0.9;
+}
+
+.category-section {
+    padding: 4rem 0;
+}
+
+.category-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.category-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 60px;
+    height: 4px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.service-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    transition: transform .3s ease, box-shadow .3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+.service-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 15px;
+    background: var(--gradient-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.service-title {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin-bottom: .75rem;
+}
+
+.service-description {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.service-price {
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.service-actions {
+    margin-top: auto;
+}
+
+@media (max-width: 768px) {
+    .services-page-header h1 {
+        font-size: 2rem;
+    }
+}
+{% endblock %}
+
+{% block content %}
+<header class="services-page-header">
+    <h1>Nossos Serviços</h1>
+    <p>Descubra as soluções que oferecemos para impulsionar o seu negócio com tecnologia.</p>
+</header>
+
+<div class="container">
+    {% for categoria in categorias %}
+    <section class="category-section" id="cat-{{ categoria.slug }}">
+        <h2 class="category-title"><i class="fas fa-{{ categoria.icone|cut:'fas fa-' }}" style="margin-right:.5rem;"></i>{{ categoria.nome }}</h2>
+        <div class="services-grid">
+            {% for servico in categoria.servicos.all %}
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-icon"><i class="fas fa-{{ categoria.icone|cut:'fas fa-' }}"></i></div>
+                <h3 class="service-title">{{ servico.nome }}</h3>
+                <p class="service-description">{{ servico.descricao_curta }}</p>
+                {% if servico.preco_inicial %}
+                <div class="service-price">A partir de R$ {{ servico.preco_inicial|floatformat:0 }}</div>
+                {% endif %}
+                <div class="service-actions">
+                    <a href="{% url 'web_site:servico_detalhe' servico.slug %}" class="btn btn-secondary" style="margin-right:.5rem">Saiba mais</a>
+                    <a href="{% url 'web_site:orcamento' %}?servico={{ servico.id }}" class="btn btn-primary">Solicitar Orçamento</a>
+                </div>
+            </div>
+            {% empty %}
+            <p>Em breve novos serviços nesta categoria.</p>
+            {% endfor %}
+        </div>
+    </section>
+    {% endfor %}
+</div>
+{% endblock %} 

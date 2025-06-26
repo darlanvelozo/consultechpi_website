@@ -1,0 +1,671 @@
+{% extends 'web_site/base.html' %}
+
+{% block title %}{% if config %}{{ config.nome_empresa }} - {{ config.slogan }}{% else %}ConsulTech Piauí - Consultoria Tecnológica{% endif %}{% endblock %}
+
+{% block meta_description %}{% if config %}{{ config.meta_description }}{% else %}Consultoria tecnológica especializada em desenvolvimento de sites, sistemas e automação no Piauí. Transformamos ideias em soluções digitais inovadoras.{% endif %}{% endblock %}
+
+{% block extra_css %}
+/* Hero Section */
+.hero {
+    min-height: 100vh;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.hero-text h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.hero-text .highlight {
+    background: linear-gradient(45deg, #fbbf24, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-text p {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.hero-visual {
+    position: relative;
+    height: 500px;
+}
+
+.code-window {
+    background: var(--dark-color);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-xl);
+    position: relative;
+    overflow: hidden;
+}
+
+.code-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.code-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.code-dot.red { background: #ef4444; }
+.code-dot.yellow { background: #f59e0b; }
+.code-dot.green { background: #10b981; }
+
+.code-content {
+    font-family: 'JetBrains Mono', monospace;
+    color: #e5e7eb;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.code-line {
+    margin-bottom: 0.5rem;
+}
+
+.code-keyword { color: #8b5cf6; }
+.code-string { color: #10b981; }
+.code-comment { color: #6b7280; }
+.code-function { color: #f59e0b; }
+
+.floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.floating-element {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.floating-element:nth-child(1) {
+    width: 60px;
+    height: 60px;
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.floating-element:nth-child(2) {
+    width: 40px;
+    height: 40px;
+    top: 60%;
+    right: 20%;
+    animation-delay: 2s;
+}
+
+.floating-element:nth-child(3) {
+    width: 80px;
+    height: 80px;
+    bottom: 20%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+/* Services Section */
+.services {
+    padding: 6rem 0;
+    background: var(--light-color);
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.service-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-xl);
+}
+
+.service-card:hover::before {
+    transform: scaleX(1);
+}
+
+.service-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-primary);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.service-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.service-description {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.service-features {
+    list-style: none;
+    margin-bottom: 1.5rem;
+}
+
+.service-features li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.service-features li::before {
+    content: '✓';
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.service-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* Stats Section */
+.stats {
+    padding: 4rem 0;
+    background: var(--dark-color);
+    color: white;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    text-align: center;
+}
+
+.stat-item {
+    padding: 2rem;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Technologies Section */
+.technologies {
+    padding: 6rem 0;
+    background: white;
+}
+
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.tech-item {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 15px;
+    background: var(--light-color);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.tech-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    background: white;
+}
+
+.tech-icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 1rem;
+    background: var(--gradient-tech);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.tech-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* CTA Section */
+.cta {
+    padding: 6rem 0;
+    background: var(--gradient-secondary);
+    text-align: center;
+    color: white;
+}
+
+.cta h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+}
+
+.cta p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .hero-text h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-visual {
+        height: 300px;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+}
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="hero-content">
+        <div class="hero-text" data-aos="fade-right">
+            <h1>Transformando <span class="highlight">Ideias</span> em <span class="highlight">Soluções</span> Digitais</h1>
+            <p>{% if config %}{{ config.descricao_empresa }}{% else %}Somos uma consultoria tecnológica especializada em desenvolvimento de sites, sistemas e automação. Transformamos sua visão em realidade digital com tecnologia de ponta.{% endif %}</p>
+            <div class="hero-buttons">
+                <a href="{% url 'web_site:contato' %}" class="btn btn-primary">
+                    <i class="fas fa-rocket"></i>
+                    Começar Projeto
+                </a>
+                <a href="{% url 'web_site:projetos' %}" class="btn btn-secondary">
+                    <i class="fas fa-eye"></i>
+                    Ver Portfólio
+                </a>
+            </div>
+        </div>
+        <div class="hero-visual" data-aos="fade-left">
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="code-dot red"></div>
+                    <div class="code-dot yellow"></div>
+                    <div class="code-dot green"></div>
+                </div>
+                <div class="code-content">
+                    <div class="code-line"><span class="code-keyword">class</span> <span class="code-function">ConsulTechPiaui</span>:</div>
+                    <div class="code-line">&nbsp;&nbsp;<span class="code-keyword">def</span> <span class="code-function">__init__</span>(<span class="code-keyword">self</span>):</div>
+                    <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">self</span>.expertise = <span class="code-string">"Tecnologia"</span></div>
+                    <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">self</span>.location = <span class="code-string">"Piauí"</span></div>
+                    <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">self</span>.mission = <span class="code-string">"Inovação"</span></div>
+                    <div class="code-line"></div>
+                    <div class="code-line">&nbsp;&nbsp;<span class="code-keyword">def</span> <span class="code-function">transform_ideas</span>(<span class="code-keyword">self</span>, idea):</div>
+                    <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"># Transformando ideias em soluções</span></div>
+                    <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> <span class="code-string">"Solução Digital"</span></div>
+                </div>
+            </div>
+            <div class="floating-elements">
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services" id="services">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">Nossos Serviços</h2>
+            <p class="section-subtitle">Oferecemos soluções completas em tecnologia para impulsionar seu negócio</p>
+        </div>
+        <div class="services-grid">
+            {% for servico in servicos_destaque %}
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="service-icon">
+                    <i class="fas fa-{{ servico.categoria.icone|cut:'fas fa-' }}"></i>
+                </div>
+                <h3 class="service-title">{{ servico.nome }}</h3>
+                <p class="service-description">{{ servico.descricao_curta }}</p>
+                <ul class="service-features">
+                    {% for caracteristica in servico.caracteristicas|slice:":3" %}
+                    <li>{{ caracteristica }}</li>
+                    {% endfor %}
+                </ul>
+                {% if servico.preco_inicial %}
+                <div class="service-price">A partir de R$ {{ servico.preco_inicial|floatformat:0 }}</div>
+                {% endif %}
+            </div>
+            {% empty %}
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3 class="service-title">Desenvolvimento Web</h3>
+                <p class="service-description">Sites e aplicações web modernas e responsivas com as melhores tecnologias do mercado.</p>
+                <ul class="service-features">
+                    <li>Sites Institucionais</li>
+                    <li>E-commerce</li>
+                    <li>Aplicações Web</li>
+                </ul>
+                <div class="service-price">A partir de R$ 5.000</div>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="service-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3 class="service-title">Apps Mobile</h3>
+                <p class="service-description">Aplicativos nativos e híbridos para iOS e Android com interface intuitiva.</p>
+                <ul class="service-features">
+                    <li>iOS e Android</li>
+                    <li>Interface Intuitiva</li>
+                    <li>Push Notifications</li>
+                </ul>
+                <div class="service-price">A partir de R$ 25.000</div>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3 class="service-title">Automação</h3>
+                <p class="service-description">Automatize processos empresariais e aumente a eficiência da sua empresa.</p>
+                <ul class="service-features">
+                    <li>Processos Empresariais</li>
+                    <li>Workflows</li>
+                    <li>Integrações</li>
+                </ul>
+                <div class="service-price">Sob consulta</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item" data-aos="fade-up">
+                <div class="stat-number" data-target="{{ estatisticas.projetos_concluidos }}">0</div>
+                <div class="stat-label">Projetos Concluídos</div>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="stat-number" data-target="{{ estatisticas.clientes_atendidos }}">0</div>
+                <div class="stat-label">Clientes Satisfeitos</div>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-number" data-target="{{ estatisticas.anos_experiencia }}">0</div>
+                <div class="stat-label">Anos de Experiência</div>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="stat-number" data-target="{{ estatisticas.tecnologias_dominadas }}">0</div>
+                <div class="stat-label">Tecnologias Dominadas</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Technologies Section -->
+<section class="technologies" id="about">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">Nossa Stack Tecnológica</h2>
+            <p class="section-subtitle">Utilizamos as tecnologias mais modernas e eficientes do mercado</p>
+        </div>
+        <div class="tech-grid">
+            {% for tecnologia in tecnologias_destaque %}
+            <div class="tech-item" data-aos="fade-up" data-aos-delay="50">
+                <div class="tech-icon">
+                    <i class="fab fa-{{ tecnologia.nome|lower }}"></i>
+                </div>
+                <div class="tech-name">{{ tecnologia.nome }}</div>
+            </div>
+            {% empty %}
+            <div class="tech-item" data-aos="fade-up">
+                <div class="tech-icon">
+                    <i class="fab fa-react"></i>
+                </div>
+                <div class="tech-name">React</div>
+            </div>
+            <div class="tech-item" data-aos="fade-up" data-aos-delay="50">
+                <div class="tech-icon">
+                    <i class="fab fa-python"></i>
+                </div>
+                <div class="tech-name">Python</div>
+            </div>
+            <div class="tech-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="tech-icon">
+                    <i class="fab fa-node-js"></i>
+                </div>
+                <div class="tech-name">Node.js</div>
+            </div>
+            <div class="tech-item" data-aos="fade-up" data-aos-delay="150">
+                <div class="tech-icon">
+                    <i class="fab fa-aws"></i>
+                </div>
+                <div class="tech-name">AWS</div>
+            </div>
+            <div class="tech-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="tech-icon">
+                    <i class="fab fa-docker"></i>
+                </div>
+                <div class="tech-name">Docker</div>
+            </div>
+            <div class="tech-item" data-aos="fade-up" data-aos-delay="250">
+                <div class="tech-icon">
+                    <i class="fab fa-github"></i>
+                </div>
+                <div class="tech-name">GitHub</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta" id="contact">
+    <div class="container">
+        <h2 data-aos="fade-up">Pronto para Transformar seu Negócio?</h2>
+        <p data-aos="fade-up" data-aos-delay="100">Vamos conversar sobre como podemos ajudar sua empresa a crescer com tecnologia</p>
+        <a href="{% url 'web_site:contato' %}" class="btn btn-primary" data-aos="fade-up" data-aos-delay="200">
+            <i class="fas fa-paper-plane"></i>
+            Solicitar Orçamento
+        </a>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+// Animated Counter
+function animateCounter(element, target) {
+    let current = 0;
+    const increment = target / 100;
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            current = target;
+            clearInterval(timer);
+        }
+        element.textContent = Math.floor(current);
+    }, 20);
+}
+
+// Intersection Observer for Counters
+const observerOptions = {
+    threshold: 0.5
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const counter = entry.target;
+            const target = parseInt(counter.getAttribute('data-target'));
+            animateCounter(counter, target);
+            observer.unobserve(counter);
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.stat-number').forEach(counter => {
+    observer.observe(counter);
+});
+
+// Parallax Effect for Floating Elements
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const parallax = document.querySelectorAll('.floating-element');
+    
+    parallax.forEach((element, index) => {
+        const speed = 0.5 + (index * 0.1);
+        element.style.transform = `translateY(${scrolled * speed}px)`;
+    });
+});
+
+// Service Cards Hover Effect
+document.querySelectorAll('.service-card').forEach(card => {
+    card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-10px) scale(1.02)';
+    });
+    
+    card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+    });
+});
+
+// Technology Items Animation
+document.querySelectorAll('.tech-item').forEach((item, index) => {
+    item.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-5px) rotate(5deg)';
+    });
+    
+    item.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) rotate(0deg)';
+    });
+});
+
+// Typing Effect for Hero Title
+// function typeWriter(element, text, speed = 100) {
+//     let i = 0;
+//     element.innerHTML = '';
+//     function type() {
+//         if (i < text.length) {
+//             element.innerHTML += text.charAt(i);
+//             i++;
+//             setTimeout(type, speed);
+//         }
+//     }
+//     type();
+// }
+
+// window.addEventListener('load', () => {
+//     const heroTitle = document.querySelector('.hero-text h1');
+//     if (heroTitle) {
+//         const originalText = heroTitle.innerHTML;
+//         heroTitle.innerHTML = originalText; // apenas mantém o texto original com marcação
+//     }
+// });
+{% endblock %} 
