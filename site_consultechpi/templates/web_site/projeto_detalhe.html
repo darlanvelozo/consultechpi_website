@@ -1,0 +1,104 @@
+{% extends 'web_site/base.html' %}
+
+{% block title %}{{ projeto.nome }} - Portfólio{% endblock %}
+
+{% block meta_description %}Detalhes do projeto {{ projeto.nome }} realizado pela {{ config.nome_empresa }}.{% endblock %}
+
+{% block extra_css %}
+.project-hero { position:relative; height:50vh; display:flex; align-items:center; justify-content:center; color:#fff; /* background removido; será definido inline */ }
+.project-hero h1 { font-size:2.5rem; font-weight:800; text-align:center; }
+
+.project-details { padding:4rem 0; }
+.project-details h2 { font-size:1.75rem; font-weight:700; margin-bottom:1rem; color:var(--text-primary); }
+.project-details p { color:var(--text-secondary); margin-bottom:1rem; }
+.project-meta { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1.5rem; margin-bottom:2rem; }
+.meta-box { background:#fff; padding:1.5rem; border-radius:15px; box-shadow:var(--shadow-md); }
+.meta-box span { display:block; font-weight:600; margin-bottom:.25rem; color:var(--primary-color); }
+.tech-badges { display:flex; flex-wrap:wrap; gap:.5rem; }
+.tech-badges .badge { background:var(--gradient-tech); color:#fff; padding:.35rem .75rem; border-radius:50px; font-size:.9rem; }
+
+.related-projects { padding:4rem 0; background:var(--light-color); }
+.related-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:2rem; }
+.related-card { border-radius:15px; overflow:hidden; box-shadow:var(--shadow-md); transition:transform .3s ease, box-shadow .3s ease; }
+.related-card:hover { transform:translateY(-6px); box-shadow:var(--shadow-lg); }
+.related-thumb { width:100%; height:180px; object-fit:cover; }
+.related-info { padding:1rem; background:#fff; }
+
+@media (max-width:768px){ .project-hero{height:35vh;} .project-hero h1{font-size:1.75rem;} }
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="project-hero" style="background:linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url('{% if projeto.imagem_principal %}{{ projeto.imagem_principal.url }}{% else %}https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=60{% endif %}') center/cover no-repeat;" data-aos="zoom-in">
+    <h1>{{ projeto.nome }}</h1>
+</section>
+
+<!-- Detalhes -->
+<section class="project-details">
+    <div class="container">
+        <div class="project-meta" data-aos="fade-up">
+            <div class="meta-box"><span>Cliente</span>{{ projeto.cliente }}</div>
+            {% if projeto.categoria_servico %}<div class="meta-box"><span>Categoria</span>{{ projeto.categoria_servico.nome }}</div>{% endif %}
+            <div class="meta-box"><span>Status</span>{{ projeto.get_status_display }}</div>
+            {% if projeto.url_projeto %}<div class="meta-box"><span>Website</span><a href="{{ projeto.url_projeto }}" target="_blank">Visitar site</a></div>{% endif %}
+            {% if projeto.url_github %}<div class="meta-box"><span>GitHub</span><a href="{{ projeto.url_github }}" target="_blank">Repositório</a></div>{% endif %}
+        </div>
+
+        <h2 data-aos="fade-up">Descrição</h2>
+        <p data-aos="fade-up" data-aos-delay="50">{{ projeto.descricao }}</p>
+
+        {% if projeto.desafios %}
+        <h2 data-aos="fade-up">Desafios</h2>
+        <p data-aos="fade-up" data-aos-delay="50">{{ projeto.desafios }}</p>
+        {% endif %}
+
+        {% if projeto.solucoes %}
+        <h2 data-aos="fade-up">Soluções</h2>
+        <p data-aos="fade-up" data-aos-delay="50">{{ projeto.solucoes }}</p>
+        {% endif %}
+
+        <h2 data-aos="fade-up">Tecnologias Utilizadas</h2>
+        <div class="tech-badges" data-aos="fade-up" data-aos-delay="50">
+            {% for tech in projeto.tecnologias.all %}
+            <span class="badge">{{ tech.nome }}</span>
+            {% empty %}
+            <span>Nenhuma tecnologia cadastrada.</span>
+            {% endfor %}
+        </div>
+
+        {% if projeto.imagens_adicionais %}
+        <h2 style="margin-top:2rem;" data-aos="fade-up">Galeria</h2>
+        <div class="project-meta" data-aos="fade-up" data-aos-delay="50">
+            {% for img in projeto.imagens_adicionais %}
+            <div><img src="{{ img }}" alt="Imagem adicional" style="width:100%; border-radius:15px; box-shadow:var(--shadow-sm);"></div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Projetos Relacionados -->
+{% if projetos_relacionados %}
+<section class="related-projects">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">Projetos Relacionados</h2>
+        </div>
+        <div class="related-grid">
+            {% for proj in projetos_relacionados %}
+            <div class="related-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'1' }}00">
+                <a href="{% url 'web_site:projeto_detalhe' proj.slug %}">
+                    {% if proj.imagem_principal %}
+                    <img src="{{ proj.imagem_principal.url }}" alt="{{ proj.nome }}" class="related-thumb">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1517430816045-df4b7de11d1a?auto=format&fit=crop&w=800&q=60" alt="Projeto" class="related-thumb">
+                    {% endif %}
+                    <div class="related-info">{{ proj.nome }}</div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %} 

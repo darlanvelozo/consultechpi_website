@@ -28,7 +28,10 @@ def home(request):
             whatsapp="(86) 99999-9999",
             endereco="Teresina, Piauí - Brasil",
             meta_description="Consultoria tecnológica especializada em desenvolvimento de sites, sistemas e automação no Piauí.",
-            meta_keywords="consultoria tecnológica, desenvolvimento web, sistemas, automação, Piauí, Teresina"
+            meta_keywords="consultoria tecnológica, desenvolvimento web, sistemas, automação, Piauí, Teresina",
+            mostrar_servicos=True,
+            mostrar_sobre=True,
+            mostrar_portfolio=True,
         )
     
     context = {

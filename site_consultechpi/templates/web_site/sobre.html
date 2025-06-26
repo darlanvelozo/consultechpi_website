@@ -1,0 +1,278 @@
+{% extends 'web_site/base.html' %}
+
+{% block title %}Sobre Nós - {% if config %}{{ config.nome_empresa }}{% else %}ConsulTech Piauí{% endif %}{% endblock %}
+
+{% block meta_description %}{% if config %}Saiba mais sobre a história, valores e equipe da {{ config.nome_empresa }}.{% else %}Conheça a história, missão e equipe da ConsulTech Piauí.{% endif %}{% endblock %}
+
+{% block extra_css %}
+/* Hero */
+.about-hero {
+    background: var(--gradient-secondary);
+    color: #fff;
+    padding: 6rem 0 4rem;
+    text-align: center;
+}
+.about-hero h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+.about-hero p {
+    font-size: 1.2rem;
+    opacity: .9;
+}
+
+/* Sobre Empresa */
+.about-company {
+    padding: 4rem 0;
+}
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+.about-text h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+.about-text p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+/* Stats (reaproveitado do home) */
+.stats {
+    padding: 4rem 0;
+    background: var(--dark-color);
+    color: white;
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    text-align: center;
+}
+.stat-item {
+    padding: 2rem;
+}
+.stat-number {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--accent-color);
+    margin-bottom: .5rem;
+}
+.stat-label {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, .8);
+}
+
+/* Equipe */
+.team-section {
+    padding: 6rem 0;
+    background: var(--light-color);
+}
+.team-section .section-title { margin-bottom: 1rem; }
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+.team-member {
+    background: #fff;
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+.team-member:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+.team-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1rem;
+}
+.team-name { font-weight: 700; font-size: 1.125rem; margin-bottom: .25rem; }
+.team-role { color: var(--text-secondary); font-size: .95rem; margin-bottom: .75rem; }
+.team-social a { color: var(--primary-color); margin: 0 .25rem; font-size: 1.25rem; }
+.team-social a:hover { color: var(--accent-color); }
+
+/* Tecnologias */
+.technologies {
+    padding: 6rem 0;
+    background: white;
+}
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+.tech-item {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 15px;
+    background: var(--light-color);
+    transition: all .3s ease;
+    cursor: pointer;
+}
+.tech-item:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); background: #fff; }
+.tech-icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 1rem;
+    background: var(--gradient-tech);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #fff;
+}
+.tech-name { font-weight: 600; color: var(--text-primary); }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .about-hero h1 { font-size: 2.25rem; }
+}
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="about-hero" data-aos="fade-down">
+    <div class="container">
+        <h1>Sobre Nós</h1>
+        <p>{% if config %}{{ config.slogan }}{% else %}Transformando ideias em soluções digitais inovadoras.{% endif %}</p>
+    </div>
+</section>
+
+<!-- Sobre a Empresa -->
+<section class="about-company">
+    <div class="container about-grid" data-aos="fade-up">
+        <div class="about-text">
+            <h2>Nossa História</h2>
+            <p>{% if config %}{{ config.descricao_empresa }}{% else %}Somos uma consultoria de tecnologia sediada no Piauí dedicada a criar soluções digitais de alto impacto para empresas de todos os portes.{% endif %}</p>
+            <p>Combinamos expertise técnica com criatividade para entregar resultados que geram valor real ao negócio de nossos clientes.</p>
+        </div>
+        <div class="about-image" style="text-align:center;">
+            <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=600&q=60" alt="Equipe trabalhando" style="max-width:100%; border-radius:20px; box-shadow: var(--shadow-lg);">
+        </div>
+    </div>
+</section>
+
+<!-- Estatísticas -->
+<section class="stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item" data-aos="fade-up">
+                <div class="stat-number" data-target="{{ estatisticas.projetos_concluidos }}">0</div>
+                <div class="stat-label">Projetos Concluídos</div>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="stat-number" data-target="{{ estatisticas.clientes_atendidos }}">0</div>
+                <div class="stat-label">Clientes Satisfeitos</div>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-number" data-target="{{ estatisticas.anos_experiencia }}">0</div>
+                <div class="stat-label">Anos de Experiência</div>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="stat-number" data-target="{{ estatisticas.tecnologias_dominadas }}">0</div>
+                <div class="stat-label">Tecnologias Dominadas</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Equipe -->
+<section class="team-section" id="team">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">Nossa Equipe</h2>
+            <p class="section-subtitle">Profissionais apaixonados por tecnologia e inovação</p>
+        </div>
+        <div class="team-grid">
+            {% for membro in equipe %}
+            <div class="team-member" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'1' }}00">
+                {% if membro.foto %}
+                <img src="{{ membro.foto.url }}" alt="{{ membro.nome }}" class="team-photo">
+                {% else %}
+                <img src="https://ui-avatars.com/api/?name={{ membro.nome|urlencode }}&size=256&background=6366f1&color=fff&font-size=0.5" alt="Avatar" class="team-photo">
+                {% endif %}
+                <div class="team-name">{{ membro.nome }}</div>
+                <div class="team-role">{{ membro.get_cargo_display }}</div>
+                <div class="team-social">
+                    {% if membro.linkedin %}<a href="{{ membro.linkedin }}" target="_blank"><i class="fab fa-linkedin"></i></a>{% endif %}
+                    {% if membro.github %}<a href="{{ membro.github }}" target="_blank"><i class="fab fa-github"></i></a>{% endif %}
+                    {% if membro.email %}<a href="mailto:{{ membro.email }}"><i class="fas fa-envelope"></i></a>{% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p data-aos="fade-up">Nossa equipe está crescendo! Em breve apresentaremos nossos talentos aqui.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Tecnologias -->
+<section class="technologies" id="stack">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">Tecnologias que Dominamos</h2>
+            <p class="section-subtitle">Do frontend ao backend, da nuvem à IA</p>
+        </div>
+        <div class="tech-grid">
+            {% for tecnologia in tecnologias %}
+            <div class="tech-item" data-aos="fade-up" data-aos-delay="50">
+                <div class="tech-icon"><i class="fab fa-{{ tecnologia.nome|lower }}"></i></div>
+                <div class="tech-name">{{ tecnologia.nome }}</div>
+            </div>
+            {% empty %}
+            <p>Nossa base tecnológica está sendo atualizada...</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+// Animated Counter (mesmo script usado na home)
+function animateCounter(element, target) {
+    let current = 0;
+    const increment = target / 100;
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            current = target;
+            clearInterval(timer);
+        }
+        element.textContent = Math.floor(current);
+    }, 20);
+}
+
+const observerOptions = { threshold: 0.5 };
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const counter = entry.target;
+            const target = parseInt(counter.getAttribute('data-target'));
+            animateCounter(counter, target);
+            observer.unobserve(counter);
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.stat-number').forEach(counter => {
+    observer.observe(counter);
+});
+{% endblock %} 

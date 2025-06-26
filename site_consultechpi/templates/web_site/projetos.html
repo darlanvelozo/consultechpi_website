@@ -1,0 +1,104 @@
+{% extends 'web_site/base.html' %}
+
+{% block title %}Portfólio - {% if config %}{{ config.nome_empresa }}{% else %}ConsulTech Piauí{% endif %}{% endblock %}
+
+{% block meta_description %}{% if config %}Confira nossos projetos de sucesso e cases da {{ config.nome_empresa }}.{% else %}Veja os projetos criados pela ConsulTech Piauí.{% endif %}{% endblock %}
+
+{% block extra_css %}
+/* Header */
+.portfolio-header {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    background: var(--gradient-primary);
+    color: #fff;
+}
+.portfolio-header h1 { font-size: 2.75rem; font-weight: 800; margin-bottom: 1rem; }
+.portfolio-header p { font-size: 1.125rem; opacity: .9; }
+
+/* Filters */
+.filter-bar { margin: 2rem 0; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+.filter-bar select { padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid #d1d5db; font-size: 1rem; }
+.filter-bar button { padding: 0.75rem 1.5rem; }
+
+/* Grid */
+.project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+.project-card { background:#fff; border-radius:20px; overflow:hidden; box-shadow:var(--shadow-md); transition:transform .3s ease, box-shadow .3s ease; display:flex; flex-direction:column; }
+.project-card:hover { transform:translateY(-8px); box-shadow:var(--shadow-xl); }
+.project-thumb { width:100%; height:200px; object-fit:cover; }
+.project-info { padding:1.5rem; flex-grow:1; }
+.project-info h3 { font-size:1.25rem; font-weight:700; margin-bottom:.5rem; color:var(--text-primary); }
+.project-meta { color:var(--text-secondary); font-size:.95rem; }
+
+/* Pagination */
+.pagination { margin-top:3rem; display:flex; justify-content:center; align-items:center; gap:1rem; }
+.pagination a { padding:0.5rem 1rem; border-radius:8px; background:var(--primary-color); color:#fff; font-weight:600; text-decoration:none; }
+.pagination a:hover { background:var(--primary-dark); }
+
+@media (max-width:768px) { .portfolio-header h1 { font-size:2rem; } }
+{% endblock %}
+
+{% block content %}
+<header class="portfolio-header">
+    <h1>Nosso Portfólio</h1>
+    <p>Projetos que entregam resultados reais e impulsionam negócios</p>
+</header>
+
+<div class="container" data-aos="fade-up">
+    <!-- Filtros -->
+    <form method="get" class="filter-bar">
+        <select name="categoria" onchange="this.form.submit()">
+            <option value="">Todas as Categorias</option>
+            {% for cat in categorias %}
+            <option value="{{ cat.slug }}" {% if filtros.categoria == cat.slug %}selected{% endif %}>{{ cat.nome }}</option>
+            {% endfor %}
+        </select>
+        <select name="status" onchange="this.form.submit()">
+            <option value="">Todos os Status</option>
+            <option value="concluido" {% if filtros.status == 'concluido' %}selected{% endif %}>Concluído</option>
+            <option value="em_desenvolvimento" {% if filtros.status == 'em_desenvolvimento' %}selected{% endif %}>Em Desenvolvimento</option>
+            <option value="em_manutencao" {% if filtros.status == 'em_manutencao' %}selected{% endif %}>Em Manutenção</option>
+        </select>
+        <select name="tecnologia" onchange="this.form.submit()">
+            <option value="">Todas as Tecnologias</option>
+            {% for tech in tecnologias %}
+            <option value="{{ tech.nome }}" {% if filtros.tecnologia == tech.nome %}selected{% endif %}>{{ tech.nome }}</option>
+            {% endfor %}
+        </select>
+        <noscript><button type="submit" class="btn btn-secondary">Filtrar</button></noscript>
+    </form>
+
+    <!-- Grid de Projetos -->
+    <div class="project-grid">
+        {% for projeto in projetos %}
+        <div class="project-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'1' }}00">
+            <a href="{% url 'web_site:projeto_detalhe' projeto.slug %}">
+                {% if projeto.imagem_principal %}
+                <img src="{{ projeto.imagem_principal.url }}" alt="{{ projeto.nome }}" class="project-thumb">
+                {% else %}
+                <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=800&q=60" alt="Projeto" class="project-thumb">
+                {% endif %}
+            </a>
+            <div class="project-info">
+                <h3>{{ projeto.nome }}</h3>
+                <div class="project-meta">Cliente: {{ projeto.cliente }}</div>
+            </div>
+        </div>
+        {% empty %}
+        <p>Nenhum projeto encontrado.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Paginação -->
+    {% if projetos.has_other_pages %}
+    <div class="pagination">
+        {% if projetos.has_previous %}
+        <a href="?page={{ projetos.previous_page_number }}{% if filtros.categoria %}&categoria={{ filtros.categoria }}{% endif %}{% if filtros.status %}&status={{ filtros.status }}{% endif %}{% if filtros.tecnologia %}&tecnologia={{ filtros.tecnologia }}{% endif %}" aria-label="Anterior">&laquo;</a>
+        {% endif %}
+        <span>Página {{ projetos.number }} de {{ projetos.paginator.num_pages }}</span>
+        {% if projetos.has_next %}
+        <a href="?page={{ projetos.next_page_number }}{% if filtros.categoria %}&categoria={{ filtros.categoria }}{% endif %}{% if filtros.status %}&status={{ filtros.status }}{% endif %}{% if filtros.tecnologia %}&tecnologia={{ filtros.tecnologia }}{% endif %}" aria-label="Próxima">&raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

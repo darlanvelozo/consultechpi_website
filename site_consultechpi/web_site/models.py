@@ -12,7 +12,7 @@ class CategoriaServico(models.Model):
     ordem = models.PositiveIntegerField(default=0)
     ativo = models.BooleanField(default=True)
     data_criacao = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         ordering = ['ordem', 'nome']
         verbose_name = "Categoria de Serviço"
@@ -267,6 +267,9 @@ class ConfiguracaoSite(models.Model):
     meta_keywords = models.CharField(max_length=500)
     google_analytics = models.TextField(blank=True)
     pixel_facebook = models.TextField(blank=True)
+    mostrar_servicos = models.BooleanField(default=True, help_text="Exibir item Serviços no menu")
+    mostrar_sobre = models.BooleanField(default=True, help_text="Exibir item Sobre no menu")
+    mostrar_portfolio = models.BooleanField(default=True, help_text="Exibir item Portfólio no menu")
     data_atualizacao = models.DateTimeField(auto_now=True)
     
     class Meta:

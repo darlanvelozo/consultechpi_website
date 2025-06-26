@@ -1,0 +1,76 @@
+{% extends 'web_site/base.html' %}
+
+{% block title %}{{ servico.nome }} - Serviços{% endblock %}
+
+{% block meta_description %}Detalhes do serviço {{ servico.nome }} oferecido pela {{ config.nome_empresa }}.{% endblock %}
+
+{% block extra_css %}
+.service-hero {position:relative;height:50vh;display:flex;align-items:center;justify-content:center;color:#fff;}
+.service-hero h1{font-size:2.5rem;font-weight:800;text-align:center;}
+.service-details{padding:4rem 0;}
+.service-details h2{font-size:1.75rem;font-weight:700;margin-bottom:1rem;color:var(--text-primary);}
+.feature-list, .tech-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:2rem;}
+.feature-item, .tech-item{background:#fff;border-radius:12px;padding:1rem 1.25rem;box-shadow:var(--shadow-sm);display:flex;gap:.75rem;align-items:center;}
+.feature-item i{color:var(--secondary-color);} .tech-item i{color:var(--primary-color);} 
+.related-services{padding:4rem 0;background:var(--light-color);} .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;}
+.related-card{background:#fff;border-radius:15px;box-shadow:var(--shadow-md);padding:1.5rem;transition:transform .3s ease, box-shadow .3s ease;}
+.related-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);} 
+@media(max-width:768px){.service-hero{height:35vh;} .service-hero h1{font-size:1.75rem;}}
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="service-hero" style="background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)), url('{% if servico.imagem %}{{ servico.imagem.url }}{% else %}https://images.unsplash.com/photo-1523289333742-be1143f6b766?auto=format&fit=crop&w=1200&q=60{% endif %}') center/cover no-repeat;" data-aos="zoom-in">
+    <h1>{{ servico.nome }}</h1>
+</section>
+
+<!-- Detalhes -->
+<section class="service-details">
+    <div class="container">
+        <h2 data-aos="fade-up">Descrição</h2>
+        <p data-aos="fade-up" data-aos-delay="50">{{ servico.descricao_completa }}</p>
+
+        {% if servico.caracteristicas %}
+        <h2 data-aos="fade-up">Principais Características</h2>
+        <div class="feature-list" data-aos="fade-up" data-aos-delay="50">
+            {% for feat in servico.caracteristicas %}
+            <div class="feature-item"><i class="fas fa-check"></i> {{ feat }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if servico.tecnologias %}
+        <h2 data-aos="fade-up">Tecnologias Utilizadas</h2>
+        <div class="tech-list" data-aos="fade-up" data-aos-delay="50">
+            {% for tech in servico.tecnologias %}
+            <div class="tech-item"><i class="fas fa-tools"></i> {{ tech }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div data-aos="fade-up" style="margin-top:2rem;">
+            <a href="{% url 'web_site:orcamento' %}?servico={{ servico.id }}" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Solicitar Orçamento</a>
+        </div>
+    </div>
+</section>
+
+<!-- Serviços Relacionados -->
+{% if servicos_relacionados %}
+<section class="related-services">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title">Serviços Relacionados</h2>
+        </div>
+        <div class="related-grid">
+            {% for s in servicos_relacionados %}
+            <div class="related-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'1' }}00">
+                <h3 style="margin-bottom:.5rem;">{{ s.nome }}</h3>
+                <p style="color:var(--text-secondary);margin-bottom:1rem;">{{ s.descricao_curta }}</p>
+                <a href="{% url 'web_site:servico_detalhe' s.slug %}" class="btn btn-secondary">Saiba mais</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %} 

@@ -1,0 +1,44 @@
+{% extends 'web_site/base.html' %}
+
+{% block title %}Solicitar Orçamento - {% if config %}{{ config.nome_empresa }}{% else %}ConsulTech Piauí{% endif %}{% endblock %}
+
+{% block meta_description %}Solicite um orçamento personalizado para o seu projeto de tecnologia.{% endblock %}
+
+{% block extra_css %}
+.orcamento-hero{background:var(--gradient-secondary);color:#fff;text-align:center;padding:6rem 0 4rem;}
+.orcamento-hero h1{font-size:2.5rem;font-weight:800;margin-bottom:1rem;}
+.orcamento-section{padding:4rem 0;}
+.orcamento-form{background:#fff;box-shadow:var(--shadow-md);padding:2rem 2.5rem;border-radius:15px;}
+.orcamento-form .form-group{margin-bottom:1.25rem;}
+.orcamento-form .form-control{width:100%;padding:.75rem 1rem;border:1px solid #d1d5db;border-radius:8px;font-size:1rem;}
+.orcamento-form .form-control:focus{outline:none;border-color:var(--primary-color);box-shadow:0 0 0 2px rgba(99,102,241,.2);} 
+@media(max-width:768px){.orcamento-hero h1{font-size:2rem;}}
+{% endblock %}
+
+{% block content %}
+<section class="orcamento-hero" data-aos="fade-down">
+    <div class="container">
+        <h1>Solicitar Orçamento</h1>
+        <p>Conte-nos sobre o seu projeto e retornaremos com uma proposta personalizada.</p>
+    </div>
+</section>
+
+<section class="orcamento-section">
+    <div class="container">
+        <div class="orcamento-form" data-aos="fade-up">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% for field in form.visible_fields %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}<small class="form-text text-muted">{{ field.help_text }}</small>{% endif %}
+                    {% for error in field.errors %}<div style="color:#ef4444;font-size:.9rem;">{{ error }}</div>{% endfor %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Enviar Solicitação</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %} 

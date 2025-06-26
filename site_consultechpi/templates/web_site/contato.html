@@ -1,0 +1,150 @@
+{% extends 'web_site/base.html' %}
+
+{% block title %}Contato - {% if config %}{{ config.nome_empresa }}{% else %}ConsulTech Piauí{% endif %}{% endblock %}
+
+{% block meta_description %}Entre em contato conosco para solicitar orçamentos, esclarecer dúvidas ou iniciar seu próximo projeto digital.{% endblock %}
+
+{% block extra_css %}
+/* Contato */
+.contact-hero {
+    background: var(--gradient-primary);
+    color: #fff;
+    padding: 6rem 0 4rem;
+    text-align: center;
+}
+.contact-hero h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+.contact-hero p {
+    font-size: 1.2rem;
+    opacity: .9;
+}
+
+.contact-section {
+    padding: 4rem 0;
+}
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+}
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.contact-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+.contact-info-item i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-top: 4px;
+}
+.contact-info-item span {
+    font-weight: 600;
+}
+.contact-form {
+    background: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+}
+.contact-form .form-group {
+    margin-bottom: 1.25rem;
+}
+.contact-form button {
+    width: 100%;
+}
+.contact-form .form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color .2s ease;
+}
+.contact-form .form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, .2);
+}
+@media (max-width: 768px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+}
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="contact-hero" data-aos="fade-down">
+    <div class="container">
+        <h1>Fale Conosco</h1>
+        <p>Preencha o formulário ou utilize as informações abaixo para entrar em contato com nossa equipe.</p>
+    </div>
+</section>
+
+<!-- Contato -->
+<section class="contact-section">
+    <div class="container contact-grid" data-aos="fade-up">
+        <!-- Informações de contato -->
+        <div class="contact-info">
+            <div class="contact-info-item">
+                <i class="fas fa-envelope"></i>
+                <div>
+                    <span>Email:</span><br>
+                    <a href="mailto:{% if config %}{{ config.email_contato }}{% else %}contato@consultechpiaui.com{% endif %}">{% if config %}{{ config.email_contato }}{% else %}contato@consultechpiaui.com{% endif %}</a>
+                </div>
+            </div>
+            <div class="contact-info-item">
+                <i class="fas fa-phone"></i>
+                <div>
+                    <span>Telefone:</span><br>
+                    <a href="tel:{% if config %}{{ config.telefone }}{% else %}+5586999999999{% endif %}">{% if config %}{{ config.telefone }}{% else %}(86) 99999-9999{% endif %}</a>
+                </div>
+            </div>
+            <div class="contact-info-item">
+                <i class="fab fa-whatsapp"></i>
+                <div>
+                    <span>WhatsApp:</span><br>
+                    <a href="https://wa.me/{% if config %}{{ config.whatsapp|cut:'('|cut:')'|cut:'-'|cut:' ' }}{% else %}5586999999999{% endif %}" target="_blank">Enviar mensagem</a>
+                </div>
+            </div>
+            <div class="contact-info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>
+                    <span>Endereço:</span><br>
+                    {% if config %}{{ config.endereco }}{% else %}Teresina - PI, Brasil{% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário de contato -->
+        <div>
+            <div class="contact-form">
+                <h2 style="margin-bottom: 1.5rem;">Envie sua mensagem</h2>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    {% for field in form.visible_fields %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.help_text %}<small class="form-text text-muted">{{ field.help_text }}</small>{% endif %}
+                        {% for error in field.errors %}
+                        <div style="color:#ef4444; font-size:.9rem;">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

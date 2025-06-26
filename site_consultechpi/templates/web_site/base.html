@@ -407,9 +407,9 @@
             </a>
             <ul class="nav-menu" id="nav-menu">
                 <li><a href="{% url 'web_site:home' %}" class="nav-link">Início</a></li>
-                <li><a href="{% url 'web_site:servicos' %}" class="nav-link">Serviços</a></li>
-                <li><a href="{% url 'web_site:sobre' %}" class="nav-link">Sobre</a></li>
-                <li><a href="{% url 'web_site:projetos' %}" class="nav-link">Portfólio</a></li>
+                <li>{% if not config or config.mostrar_servicos %}<a href="{% url 'web_site:servicos' %}" class="nav-link">Serviços</a>{% endif %}</li>
+                <li>{% if not config or config.mostrar_sobre %}<a href="{% url 'web_site:sobre' %}" class="nav-link">Sobre</a>{% endif %}</li>
+                <li>{% if not config or config.mostrar_portfolio %}<a href="{% url 'web_site:projetos' %}" class="nav-link">Portfólio</a>{% endif %}</li>
                 <li><a href="{% url 'web_site:contato' %}" class="nav-link">Contato</a></li>
             </ul>
             <button class="mobile-menu-btn" id="mobile-menu-btn">
